@@ -12,8 +12,7 @@ export const TodoList = () => {
 	// 	setInputValue(newValue);
 	// }
 
-	// TRIGGER 1ST PUT API REQUEST
-	// Need to use useEffect
+	// TRIGGER 1ST GET API request use useEffect (should always be 1st & GET for webpages to get info from back)
 	useEffect(() => {
 		fetch(uri, {
 			method: "GET",
@@ -37,7 +36,21 @@ export const TodoList = () => {
 			headers: {
 				"Content-Type": "application/json",
 			},
-		});
+		})
+			.then((resp) => {
+				console.log(resp.ok); // will be true if the response is successfull
+				console.log(resp.status); // the status code = 200 or code = 400 etc.
+				console.log(resp.text()); // will try return the exact result as string
+				return resp.json(); // (returns promise) will try to parse the result as json as return a promise that you can .then for results
+			})
+			.then((data) => {
+				//here is were your code should start after the fetch finishes
+				console.log(data); //this will print on the console the exact object received from the server
+			})
+			.catch((error) => {
+				//error handling
+				console.log(error);
+			});
 	};
 
 	const saveTask = (e) => {
@@ -68,18 +81,18 @@ export const TodoList = () => {
 		//**deleted big chunk code */ //filter is higher order function. makes new array w/out that one index
 	};
 
-	//const markDone = (index) => {
-	//const newTodos = taskList.map((task, i) => {
-	//if (i == index) {
-	//task.done = !item.done;
-	//return task;
-	//	} else {
-	//		//	return task;
-	//	}
-	//	});
-	//	};
-	//setTodos(newTodos)
-	//updatePut(newTodos)
+	const markDone = (index) => {
+		const possibleDoneArray = taskList.map((task, i) => {
+			if (i == index) {
+				task.done = !task.done;
+				return task;
+			} else {
+				return task;
+			}
+		});
+		setTaskList(possibleDoneArray);
+		updatePut(possibleDoneArray);
+	};
 	//**deleted big chunk code */ //filter is higher order function. makes new array w/out that one index
 
 	return (
@@ -100,13 +113,22 @@ export const TodoList = () => {
 						<li className="list" key={index}>
 							{" "}
 							{/*must have key when using map function*/}
-							{task.label}
+							<span className={task.done ? "strike" : ""}>
+								{task.label}
+							</span>
 							<span
 								className="delete-icon"
 								onClick={() => removeTask(index)}>
 								{" "}
 								{/*all we care about is the index to remove task not the event itself. we are not trying to save any value by the onclick*/}
 								<i className="fas fa-trash"></i>
+							</span>
+							<span
+								onClick={() => markDone(index)}
+								className={task.done ? "green" : ""}>
+								{" "}
+								{/*all we care about is the index to remove task not the event itself. we are not trying to save any value by the onclick*/}
+								<i className="fas fa-check-square"></i>
 							</span>
 						</li>
 					);

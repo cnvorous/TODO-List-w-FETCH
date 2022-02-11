@@ -52,12 +52,22 @@ i{
  margin:5px;
 }
 
-i:hover{
+.fa-trash:hover{
     color: red;
     cursor: grabbing;
+}
+.fa-check-square:hover {
+    color: green;
+}
+
+.green {
+ color: green;
 }
 
 em{
     color:red;
 }
 
+.strike  {
+        text-decoration: line-through;
+      }
