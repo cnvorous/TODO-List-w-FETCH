@@ -62,9 +62,9 @@ export const TodoList = () => {
 	//}, [taskList]);
 
 	const removeTask = (index) => {
-		const newTodos = taskList.filter((tasktToRemove, i) => i != index);
-		setTodos(newTodos);
-		updatePut(newTodos);
+		const removeTaskArr = taskList.filter((tasktToRemove, i) => i != index);
+		setTaskList(removeTaskArr); // changes the front end
+		updatePut(removeTaskArr); // changes the back end
 		//**deleted big chunk code */ //filter is higher order function. makes new array w/out that one index
 	};
 
