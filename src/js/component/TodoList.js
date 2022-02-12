@@ -6,25 +6,28 @@ export const TodoList = () => {
 
 	const uri = "https://assets.breatheco.de/apis/fake/todos/user/cnvorous";
 
-	// (put the function in the code)
-	// function onChange(e) {
-	// 	const newValue = e.target.value;
-	// 	setInputValue(newValue);
-	// }
-
 	// TRIGGER 1ST GET API request use useEffect (should always be 1st & GET for webpages to get info from back)
 	useEffect(() => {
+		//---------------getFetch()
 		fetch(uri, {
-			method: "GET",
+			method: "GET", //landing page initial input
 		})
 			.then((response) => {
-				// the info we are getting from GET is the response(its in form of json)
+				//from class notes ---- WOULD I USE THROW ERROR HERE ???
+				//from class notes ----if(!response.ok){
+				//from class notes ----	throw Error(response.statusText)}
+				//from class notes ---- the info we are getting from GET is the response(its in form of json)
 				return response.json(); // we use .json to return info into normal object
 			})
 			.then((data) => {
+				// data is the infoo from the response.json
 				setTaskList(data);
 				console.log("data from backend", data);
 			});
+		//from class notes ----.catch((error) => {
+		//from class notes ----error handling
+		//from class notes ----console.log("error",error);  needs to be in quotations
+		//from class notes ----	});
 	}, []);
 
 	const updatePut = (updatedTodos) => {
@@ -38,18 +41,24 @@ export const TodoList = () => {
 			},
 		})
 			.then((resp) => {
-				console.log(resp.ok); // will be true if the response is successfull
-				console.log(resp.status); // the status code = 200 or code = 400 etc.
-				console.log(resp.text()); // will try return the exact result as string
+				// from class notes ----WOULD I USE THROW ERROR HERE ???
+				// from class notes ----if(!resp.ok){
+				//	from class notes ----throw Error(resp.statusText)}
+				//console.log(resp.ok); // will be true if the response is successfull
+				//console.log(resp.status); // the status code = 200 or code = 400 etc.
+				//console.log(resp.text()); // will try return the exact result as string
 				return resp.json(); // (returns promise) will try to parse the result as json as return a promise that you can .then for results
 			})
 			.then((data) => {
+				// from class notes ----console.log("success", response)
+				// from class notes ----getFetch()
 				//here is were your code should start after the fetch finishes
 				console.log(data); //this will print on the console the exact object received from the server
 			})
 			.catch((error) => {
 				//error handling
 				console.log(error);
+				//from class notes ----console.error("error", error);
 			});
 	};
 
@@ -67,12 +76,6 @@ export const TodoList = () => {
 			setInputTask(""); // this is clearing out the input text field after enter
 		}
 	};
-
-	//	API  REQUEST
-	// Need to use useEffect
-	// useEffect(()=>{
-	// get TODO function passes the new list
-	//}, [taskList]);
 
 	const removeTask = (index) => {
 		const removeTaskArr = taskList.filter((tasktToRemove, i) => i != index);
@@ -93,7 +96,6 @@ export const TodoList = () => {
 		setTaskList(possibleDoneArray);
 		updatePut(possibleDoneArray);
 	};
-	//**deleted big chunk code */ //filter is higher order function. makes new array w/out that one index
 
 	return (
 		<div className="todo-box">
